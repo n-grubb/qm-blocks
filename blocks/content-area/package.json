@@ -1,0 +1,22 @@
+{
+  "name": "qm-contentarea",
+  "version": "1.0.0",
+  "description": "QM Blocks - Content Area Gutenberg block",
+  "main": "src/block.js",
+  "author": "Noah Grubb",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/preset-env": "^7.4.3",
+    "autoprefixer": "^9.5.0",
+    "node-sass": "^4.11.0"
+  },
+  "scripts": {
+    "watch": "parcel watch src/* -d build",
+    "build": "parcel build src/* -d build --no-source-maps"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-react": "^6.24.1",
+    "cssnano": "^4.1.10"
+  }
+}
