@@ -1,6 +1,7 @@
-const { RichText, MediaUpload, PlainText } = wp.editor;
+const { RichText, MediaUpload, AlignmentToolbar, BlockControls, PlainText } = wp.editor;
 const { registerBlockType } = wp.blocks;
 const { Button } = wp.components;
+const { __, setLocaleData } = wp.i18n;
 
 // no need to import scss files here, build task will create them. 
 // they get enqueued into WP via index.php
@@ -8,7 +9,8 @@ const { Button } = wp.components;
 // import './editor.scss';
 
 registerBlockType('qm-blocks/content-area', {   
-    title: 'Content Area',
+
+    title: __( 'Content Area', 'qm-blocks' ),
     icon: 'layout',
     category: 'common',
 
@@ -33,12 +35,18 @@ registerBlockType('qm-blocks/content-area', {
         imageUrl: {
             attribute: 'src',
             selector: '.content-area-image'
-        }
+        },
+        alignment: {
+			type: 'string',
+			default: 'none',
+		},
     },
 
-    edit( { attributes, className, setAttributes } ) {
+    edit: props => {
 
-        const getImageButton = (openEvent) => {
+        const { attributes, className, setAttributes } = props;
+
+        const getImageButton = ( openEvent ) => {
             if(attributes.imageUrl) {
                 return (
                     <img 
@@ -62,39 +70,54 @@ registerBlockType('qm-blocks/content-area', {
             }
         };
 
+        const onChangeAlignment = ( newAlignment ) => {
+            console.log('change alignment event');
+			props.setAttributes( { alignment: newAlignment === undefined ? 'none' : newAlignment } );
+        };
+        
         return (
-            <div className="content-area-block container">
-                
-                <MediaUpload
-                    onSelect={ media => { setAttributes({ imageAlt: media.alt, imageUrl: media.url }); } }
-                    type="image"
-                    value={ attributes.imageID }
-                    render={ ({ open }) => getImageButton(open) }
-                />
+            <div className={ `content-area content-area-align-${ attributes.alignment }` }>
+                {
+					<BlockControls>
+						<AlignmentToolbar
+							value={ attributes.alignment }
+							onChange={ content => setAttributes({ alignment: content }) }
+						/>
+					</BlockControls>
+				}
 
-                <PlainText
-                    onChange={ content => setAttributes({ title: content }) }
-                    value={ attributes.title }
-                    placeholder="Content Header"
-                    className="heading"
-                />
+                <figure>
+                    <MediaUpload
+                        onSelect={ media => { setAttributes({ imageAlt: media.alt, imageUrl: media.url }); } }
+                        type="image"
+                        value={ attributes.imageID }
+                        render={ ({ open }) => getImageButton(open) }
+                    />
+                </figure>
 
-                <RichText
-                    onChange={ content => setAttributes({ body: content }) }
-                    value={ attributes.body }
-                    multiline="p"
-                    placeholder="content body here."
-                />
+                <div className="content-area-content">
+                    <PlainText
+                        onChange={ content => setAttributes({ title: content }) }
+                        value={ attributes.title }
+                        placeholder="Content Header"
+                        className="heading"
+                    />
+                    <RichText
+                        onChange={ content => setAttributes({ body: content }) }
+                        value={ attributes.body }
+                        multiline="p"
+                        placeholder="content body here."
+                    />
+                </div>
 
             </div>
         );
     },
 
-    save( { attributes } ) {
+    save: ( { attributes, className } ) => {
 
         const contentImage = (src, alt) => {
             if (!src) return null;
-        
             if (alt) {
                 return (
                     <img 
@@ -104,7 +127,6 @@ registerBlockType('qm-blocks/content-area', {
                     /> 
                 );
             }
-            
             // No alt set, so let's hide it from screen readers
             return (
                 <img 
@@ -115,10 +137,10 @@ registerBlockType('qm-blocks/content-area', {
                 /> 
             );
         };
-          
+
         return (
-            <div className="content-area-block">
-                { contentImage( attributes.imageUrl, attributes.imageAlt ) }
+            <div className={ `content-area content-area-align-${ attributes.alignment }` }>
+                <figure>{ contentImage( attributes.imageUrl, attributes.imageAlt ) }</figure>
                 <div className="content-area-content">
                     <h3 className="content-area-title">{ attributes.title }</h3>
                     <div className="content-area-body">

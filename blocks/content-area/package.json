@@ -11,7 +11,7 @@
     "node-sass": "^4.11.0"
   },
   "scripts": {
-    "watch": "parcel watch src/* -d build",
+    "watch": "parcel watch src/* -d build --no-source-maps",
     "build": "parcel build src/* -d build --no-source-maps"
   },
   "devDependencies": {

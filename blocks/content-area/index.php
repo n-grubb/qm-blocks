@@ -43,7 +43,7 @@ function qm_blocks_content_area_register_block() {
     wp_register_style(
         'qm-content-area-style',
         plugins_url( 'build/style.css', __FILE__ ),
-        array( 'wp-blocks' ),
+        array( ),
         filemtime( plugin_dir_path( __FILE__ ) . 'build/style.css' )
     );
 
@@ -57,8 +57,8 @@ function qm_blocks_content_area_register_block() {
 
     // Enqueue the script in the editor
     register_block_type('qm-blocks/content-area', array(
-        'style'         => 'qm-content-area-edit-style',
-        'editor_style'  => 'qm-content-area-style',
+        'style'         => 'qm-content-area-style',
+        'editor_style'  => 'qm-content-area-edit-style',
         'editor_script' => 'qm-content-area',
     ));
 

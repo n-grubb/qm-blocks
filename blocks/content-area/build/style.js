@@ -117,162 +117,79 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"block.js":[function(require,module,exports) {
-var _wp$editor = wp.editor,
-    RichText = _wp$editor.RichText,
-    MediaUpload = _wp$editor.MediaUpload,
-    AlignmentToolbar = _wp$editor.AlignmentToolbar,
-    BlockControls = _wp$editor.BlockControls,
-    PlainText = _wp$editor.PlainText;
-var registerBlockType = wp.blocks.registerBlockType;
-var Button = wp.components.Button;
-var _wp$i18n = wp.i18n,
-    __ = _wp$i18n.__,
-    setLocaleData = _wp$i18n.setLocaleData; // no need to import scss files here, build task will create them. 
-// they get enqueued into WP via index.php
-// import './style.scss';
-// import './editor.scss';
+})({"../../../../../../../../../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
 
-registerBlockType('qm-blocks/content-area', {
-  title: __('Content Area', 'qm-blocks'),
-  icon: 'layout',
-  category: 'common',
-  attributes: {
-    title: {
-      source: 'text',
-      selector: '.content-area-title'
-    },
-    body: {
-      type: 'array',
-      source: 'children',
-      selector: '.content-area-body'
-    },
-    buttonText: {
-      source: 'text',
-      selector: '.content-area-button-text'
-    },
-    imageAlt: {
-      attribute: 'alt',
-      selector: '.content-area-image'
-    },
-    imageUrl: {
-      attribute: 'src',
-      selector: '.content-area-image'
-    },
-    alignment: {
-      type: 'string',
-      default: 'none'
-    }
-  },
-  edit: function edit(props) {
-    var attributes = props.attributes,
-        className = props.className,
-        setAttributes = props.setAttributes;
-
-    var getImageButton = function getImageButton(openEvent) {
-      if (attributes.imageUrl) {
-        return wp.element.createElement("img", {
-          src: attributes.imageUrl,
-          onClick: openEvent,
-          className: "image"
-        });
-      } else {
-        return wp.element.createElement("div", {
-          className: "button-container"
-        }, wp.element.createElement(Button, {
-          onClick: openEvent,
-          className: "button button-large"
-        }, "Select an image"));
-      }
-    };
-
-    var onChangeAlignment = function onChangeAlignment(newAlignment) {
-      console.log('change alignment event');
-      props.setAttributes({
-        alignment: newAlignment === undefined ? 'none' : newAlignment
-      });
-    };
-
-    return wp.element.createElement("div", {
-      className: "content-area content-area-align-".concat(attributes.alignment)
-    }, wp.element.createElement(BlockControls, null, wp.element.createElement(AlignmentToolbar, {
-      value: attributes.alignment,
-      onChange: function onChange(content) {
-        return setAttributes({
-          alignment: content
-        });
-      }
-    })), wp.element.createElement("figure", null, wp.element.createElement(MediaUpload, {
-      onSelect: function onSelect(media) {
-        setAttributes({
-          imageAlt: media.alt,
-          imageUrl: media.url
-        });
-      },
-      type: "image",
-      value: attributes.imageID,
-      render: function render(_ref) {
-        var open = _ref.open;
-        return getImageButton(open);
-      }
-    })), wp.element.createElement("div", {
-      className: "content-area-content"
-    }, wp.element.createElement(PlainText, {
-      onChange: function onChange(content) {
-        return setAttributes({
-          title: content
-        });
-      },
-      value: attributes.title,
-      placeholder: "Content Header",
-      className: "heading"
-    }), wp.element.createElement(RichText, {
-      onChange: function onChange(content) {
-        return setAttributes({
-          body: content
-        });
-      },
-      value: attributes.body,
-      multiline: "p",
-      placeholder: "content body here."
-    })));
-  },
-  save: function save(_ref2) {
-    var attributes = _ref2.attributes,
-        className = _ref2.className;
-
-    var contentImage = function contentImage(src, alt) {
-      if (!src) return null;
-
-      if (alt) {
-        return wp.element.createElement("img", {
-          className: "content-area-image",
-          src: src,
-          alt: alt
-        });
-      } // No alt set, so let's hide it from screen readers
-
-
-      return wp.element.createElement("img", {
-        className: "content-area-image",
-        src: src,
-        alt: "",
-        "aria-hidden": "true"
-      });
-    };
-
-    return wp.element.createElement("div", {
-      className: "content-area content-area-align-".concat(attributes.alignment)
-    }, wp.element.createElement("figure", null, contentImage(attributes.imageUrl, attributes.imageAlt)), wp.element.createElement("div", {
-      className: "content-area-content"
-    }, wp.element.createElement("h3", {
-      className: "content-area-title"
-    }, attributes.title), wp.element.createElement("div", {
-      className: "content-area-body"
-    }, attributes.body)));
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
   }
-});
-},{}],"../../../../../../../../../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../../../../../../../../../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"../../../../../../../../../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"style.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../../../../../../../../../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../../../../../../../../../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -475,4 +392,4 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../../../../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","block.js"], null)
+},{}]},{},["../../../../../../../../../../.config/yarn/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
